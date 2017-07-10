@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Brodcast Example</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+      $('body').hide()
+      let socket = io.connect();
+      let name = prompt('Your name:')
+      if (name){
+        $('body').show()
+      }
+
+      $(".send").click(function(){
+        let data = {
+          message: $('.message').val(),
+          name: name
+        }
+        socket.emit('chat', data);
+        $('.chat').append(`<p>${data.name}: ${data.message}</p>`);
+      })
+      socket.on('display', function(data){
+        $('.chat').append(`<p>${data.name}: ${data.message}</p>`);
+      })
+    })
+
+    </script>
+  </head>
+  <body>
+  <h4>Converstaion Board</h4>
+  <div class="chat">
+
+  </div>
+    <input class="message" type="text" name="" value="" placeholder="Enter message here">
+    <button class="send" type="button" name="button">Send</button>
+  </body>
+</html>
